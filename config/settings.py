@@ -161,3 +161,44 @@ SIMPLE_JWT = {
 
 # CORS Setup
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+
+
+# Logger setup
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOG_DIR, exist_ok=True)
+
+LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {'format': '{asctime} [{levelname}] {name}:{lineno} - {message}', 'style': '{'},
+        'simple': {'format': '[{levelname}] {message}', 'style': '{'},
+        'json': {'format': '{{"time": "{asctime}", "level": "{levelname}", "name": "{name}", "message": "{message}"}}', 'style': '{'},
+    },
+    'handlers': {
+        'console': {
+            'level': LOG_LEVEL,
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose' if DEBUG else 'json',
+        },
+        'file': {
+            'level': LOG_LEVEL,
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'django.log'),
+            'formatter': 'verbose',
+            'when': 'midnight',
+            'backupCount': 7,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': LOG_LEVEL,
+    },
+    'loggers': {
+        'django': {'handlers': ['console', 'file'], 'level': 'INFO', 'propagate': True},
+        'django.db.backends': {'handlers': ['console'], 'level': 'DEBUG' if DEBUG else 'ERROR', 'propagate': False},
+        'users': {'handlers': ['console', 'file'], 'level': LOG_LEVEL, 'propagate': False},
+        'books': {'handlers': ['console', 'file'], 'level': LOG_LEVEL, 'propagate': False},
+    }
+}
