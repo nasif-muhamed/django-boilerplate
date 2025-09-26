@@ -1,0 +1,37 @@
+# Byte-compiled / cache
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# Logs & temp files
+*.log
+logs/
+*.pot
+
+# Local database & media uploads
+db.sqlite3
+media/
+
+# Virtual environments
+venv/
+
+# Environment variables
+.env
+
+# Git files
+.git
+.gitignore
+
+# Docker-specific
+Dockerfile
+docker-compose*.yml
+
+# IDE/editor config
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
