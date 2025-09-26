@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_spectacular',
 
     # Local apps
 ]
@@ -144,6 +145,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 ACCESS_TOKEN_LIFETIME = os.getenv("ACCESS_TOKEN_LIFETIME", 15)
@@ -201,4 +203,26 @@ LOGGING = {
         'users': {'handlers': ['console', 'file'], 'level': LOG_LEVEL, 'propagate': False},
         'books': {'handlers': ['console', 'file'], 'level': LOG_LEVEL, 'propagate': False},
     }
+}
+
+
+# Open API setup
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Project API',
+    'DESCRIPTION': 'Project API documentation',
+    'VERSION': '1.0.0',
+    'TOS': os.getenv("SPECTACULAR_TERMS_OF_SERVICE", 'https://www.example.com/terms/'),
+    'CONTACT': {
+        'name': 'API Support',
+        'email': os.getenv("SPECTACULAR_CONTACT_MAIL", 'support@example.com'),
+    },
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SORT_OPERATIONS': True,  # sorts operations within a tag
+
+    'TAGS': [
+        # {'name': 'users', 'description': 'User related operations'},
+    ],
 }
